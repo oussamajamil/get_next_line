@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ojamil <ojamil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 10:21:20 by ojamil            #+#    #+#             */
-/*   Updated: 2021/11/16 14:53:35 by ojamil           ###   ########.fr       */
+/*   Created: 2021/11/16 12:30:38 by ojamil            #+#    #+#             */
+/*   Updated: 2021/11/16 15:18:59 by ojamil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*change_result(char *result)
 {
@@ -26,7 +26,7 @@ char	*change_result(char *result)
 		i++;
 	if (result[i] == 0)
 	{
-		free (result);
+		free(result);
 		return (NULL);
 	}
 	new_result = (char *)malloc(sizeof(char) * (ft_strlen(result) - i + 1));
@@ -93,15 +93,15 @@ char	*ft_get(char *str, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*result;
+	static char	*result[65536];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	result = ft_get(result, fd);
-	if (result == NULL)
+	result[fd] = ft_get(result[fd], fd);
+	if (result[fd] == NULL)
 		return (NULL);
-	line = ft_get_line(result);
-	result = change_result(result);
+	line = ft_get_line(result[fd]);
+	result[fd] = change_result(result[fd]);
 	return (line);
 }
